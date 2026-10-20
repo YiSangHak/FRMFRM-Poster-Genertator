@@ -1,0 +1,7 @@
+import test from 'node:test';
+import assert from 'node:assert/strict';
+import {joinShapes,shapeCells,shapePath} from '../src/geometry.mjs';
+const rect=(id,col,row,w=1,h=1,rectMode='joined')=>({id,type:'rect',col,row,w,h,rectMode,fill:'#000000',autoColor:true});
+test('joining preserves an L shape and its empty corner',()=>{const es=joinShapes([rect('a',0,0,1,2),rect('b',1,1)],'b');assert.equal(es.length,1);assert.deepEqual(new Set(shapeCells(es[0]).map(c=>c.join(','))),new Set(['0,0','0,1','1,1']));assert.equal(es[0].w,2);assert.equal(es[0].h,2);assert.ok(!shapePath(es[0]).includes('NaN'));});
+test('joins transitively but leaves diagonal, different colors and separate cells alone',()=>{assert.equal(joinShapes([rect('a',0,0),rect('b',1,0),rect('c',2,0)],'c').length,1);assert.equal(joinShapes([rect('a',0,0),rect('b',1,1)],'b').length,2);assert.equal(joinShapes([rect('a',0,0),{...rect('b',1,0),fill:'#fff'}],'a').length,2);assert.equal(joinShapes([rect('a',0,0,1,1,'cells'),rect('b',1,0)],'b').length,2);});
+test('cell mode removes bridges without losing the silhouette, including a hole',()=>{const e={...rect('a',0,0,3,3),cells:[[0,0],[1,0],[2,0],[0,1],[2,1],[0,2],[1,2],[2,2]]};assert.equal(shapeCells(e).length,8);assert.equal(shapePath({...e,rectMode:'cells'}).split('M').length-1,8);assert.ok(shapePath(e).length>shapePath({...e,rectMode:'cells'}).length);const moved={...e,col:3,row:4};assert.deepEqual(shapeCells(moved),e.cells);});
