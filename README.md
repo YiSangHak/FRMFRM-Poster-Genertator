@@ -2,7 +2,13 @@
 
 React + TypeScript + Vite로 만든 로컬 포스터 에디터입니다. 별도 백엔드는 없습니다.
 
-## 실행
+## Live Server / GitHub Pages
+
+루트 `index.html`은 빌드된 실행 화면입니다. VS Code Live Server에서 이 파일을 열거나 GitHub Pages를 현재 브랜치의 `/ (root)`로 설정하면 됩니다. 하위 리포지토리 경로에서도 서체를 불러옵니다.
+
+코드 수정 후 `npm run build`를 실행하고 루트 `index.html`, `assets/`를 함께 커밋하세요. `src/index.html`은 개발용 원본입니다.
+
+## 개발 실행
 
 Node.js 20.19+ 또는 22.12+를 설치한 환경에서 프로젝트 폴더를 열고 실행합니다.
 
@@ -24,7 +30,7 @@ npm test
 - V: 선택 도구. 드래그 이동, 사각형 오른쪽 아래 핸들로 크기 변경.
 - T: 텍스트 도구. 셀을 클릭하면 FRAME 텍스트가 추가됩니다.
 - 프리셋 클릭 또는 캔버스로 드래그: 텍스트 추가.
-- 로고 버튼: 실제 OTF 글리프 패스로 구성된 6칸 로고 추가.
+- MONO 텍스트 버튼: 기본 FRMFRM을 추가한 뒤 오른쪽 입력창에서 편집합니다. 한 글자당 한 칸, 공백은 빈 칸, 줄바꿈은 다음 행입니다. 최대 10열 × 14행이며 글자는 27×27mm 안에 맞춥니다.
 - Cmd/Ctrl+D: 복제. Alt/Option+드래그: 복제 이동.
 - 방향키: 1칸, Shift+방향키: 2칸 이동.
 - Delete/Backspace: 삭제. Cmd/Ctrl+Z: 취소, Cmd/Ctrl+Shift+Z: 다시 실행.
@@ -44,7 +50,7 @@ npm test
 
 - `public/assets/fonts/FRMFRM-Regular.woff2`: 영문 Geist Sans / 한글 Pretendard 합성글꼴. 정보 텍스트 기본값, 12pt, 자간 −0.03em.
 - `public/assets/fonts/Geist-Regular.woff2`: 영문 기본 서체.
-- `public/assets/fonts/FRMFRMMONO-Regular.otf`: 로고. 실제 바운딩 박스를 기준으로 글자마다 높이 27mm, 모듈 중앙 배치.
+- `public/assets/fonts/FRMFRMMONO-Regular.otf`: MONO 텍스트. 실제 바운딩 박스를 기준으로 글자마다 27×27mm 안에 맞추고 모듈 중앙에 배치.
 - 기존 `assets/` 원본도 유지했습니다. 웹에서 사용되는 파일을 교체하려면 `public/assets/fonts/`를 수정합니다.
 
 SVG는 330mm×450mm, `viewBox="0 0 330 450"`입니다. 사각형은 rect, 정보 텍스트는 text, 로고는 원본 OTF의 path로 출력합니다. 요소별 g 그룹이 유지됩니다. 브라우저용 합성 WOFF2를 SVG에 포함하지만 Illustrator가 이를 해석한다고 보장하지 않으므로 편집할 컴퓨터에 같은 합성글꼴을 설치하세요.
